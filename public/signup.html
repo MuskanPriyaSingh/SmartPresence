@@ -3,58 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Employee Sign Up</title>
     <link rel="stylesheet" href="signup.css">
 </head>
 <body>
-    <div class="signup-container">
-        <h2>New Employee</h2>
-        <form id="signupForm" action="/signup" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="employee_id">Employee_id:</label>
-                <input type="text" id="employee_id" name="employee_id" required>
-            </div>
-            <!-- <button type="button" id="otp-btn">Send OTP</button> -->
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div> 
-            <!-- <div class="form-group">
-                <label for="otp">OTP:</label>
-                <input type="text" id="otp" name="otp" required>
-            </div> -->
-            
+    <div class="signup-page">
+        <div class="signup-header">
+            <h2>Create New Employee Account</h2>
+        </div>
 
-            
-             
-            
-            <!-- Webcam for face capture -->
-            <div class="form-group">
-                <label for="faceData">Capture photo</label>
-                <video id="video" width="320" height="240" autoplay></video>
-                <button type="button" id="capture-btn">Capture Face</button>
-                <input type="file" id="photo" name="faceData" style="display: none;">
-                <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
-                
+        <div class="signup-container">
+            <form id="signupForm" action="/signup" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="employee_id">Employee ID:</label>
+                    <input type="text" id="employee_id" name="employee_id" required placeholder="Enter employee ID">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter password">
+                </div>
 
-            </div>
+                <div class="form-group">
+                    <label for="faceData">Capture Photo</label>
+                    <video id="video" width="320" height="240" autoplay></video>
+                    <button type="button" id="capture-btn">Capture Face</button>
+                    <input type="file" id="photo" name="faceData" style="display: none;">
+                    <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+                </div>
 
-            <button type="submit" id="signup-btn">Register</button>
-        </form>
-
-          
+                <button type="submit" id="signup-btn">Register</button>
+            </form>
+        </div>
     </div>
-  
 
-   
-
-    <!-- <script defer src="https://cdn.jsdelivr.net/npm/face-api.js"></script>/ -->
-    <script src="script.js"></script>
-    
-
+    <script src="signup.js"></script>
 </body>
 </html>

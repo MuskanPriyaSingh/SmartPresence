@@ -3,67 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HR Dashboard - EliteConnect</title>
+  <title>HR Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .sidebar {
-      height: 100vh;
-      background-color: #343a40;
-      padding-top: 1rem;
-    }
-    .sidebar a {
-      color: #ffffff;
-      padding: 10px;
-      display: block;
-      text-decoration: none;
-    }
-    .sidebar a:hover {
-      background-color: #495057;
-    }
-    .header {
-      background-color: #ffffff;
-      padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .profile-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-    }
-    .card-icon {
-      font-size: 1.5rem;
-    }
-    table {
-      width: 100%;
-    }
-  </style>
+  <link rel="stylesheet" href="hr_dashboard.css">
 </head>
 <body>
-<div class="container-fluid">
-  <div class="row">
-    <nav class="col-md-2 sidebar">
-      <h4 class="text-white text-center">EliteConnect</h4>
-      <a href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
-      <a href="#"><i class="bi bi-people"></i> Employees</a>
-      <a href="#"><i class="bi bi-calendar-check"></i> Attendance</a>
-      <a href="#"><i class="bi bi-journal"></i> Reports</a>
-      <a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
+  <div class="d-flex" style="height: 100vh;">
+    <nav class="sidebar">
+      <div class="sidebar-header text-center">
+        <img src="assets/SmartPresence_logo.png" alt="SmartPresence" class="img-fluid logo">
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-people"></i> Employees</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-calendar-check"></i> Attendance</a></li>
+        <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-journal"></i> Reports</a></li>
+        <li class="nav-item"><a href="#" class="nav-link sidebar-logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+      </ul>
     </nav>
 
-    <main class="col-md-10 ms-sm-auto">
-      <div class="header d-flex justify-content-between align-items-center">
+    <main class="flex-grow-1 d-flex flex-column">
+      <div class="header d-flex justify-content-between align-items-center mt-3">
+        <button id="sidebarToggle" class="btn btn-outline-primary d-md-none me-2"> ☰ </button>
         <h3 class="mb-0">HR Dashboard</h3>
         <div class="d-flex align-items-center">
-          <img src="company_logo.png" alt="Logo" class="me-2" style="width: 40px; height: 40px;">
-          <button class="btn btn-outline-secondary btn-sm">Logout</button>
+          <button id="darkModeToggle" class="btn btn-sm btn-secondary me-2">🌙 Dark Mode</button>
+          <button class="btn btn-logout btn-sm text-bg-danger">Logout</button>
         </div>
       </div>
 
+      <!-- Statistics Row -->
       <div class="row mt-4">
         <div class="col-md-3">
           <div class="card text-bg-primary mb-3">
@@ -122,6 +93,7 @@
         </div>
       </div>
 
+      <!-- Charts and Activities -->
       <div class="row">
         <div class="col-md-8">
           <div class="card mb-4">
@@ -137,17 +109,24 @@
             <div class="card-header">Recent Activities</div>
             <div class="card-body">
               <ul id="activityLog" class="list-group"></ul>
-              <button id="showAllBtn" class="btn btn-sm btn-link mt-2">Show All</button>
+              <button id="showAllBtn" class="btn btn-sm btn-link mt-2">See More</button>
             </div>
           </div>
         </div>
       </div>
+      
+      <div class="mb-3 d-flex flex-wrap gap-2">
+        <input type="date" id="filterDate" class="form-control" style="max-width: 200px;" />
+        <input type="text" id="attendanceSearch" placeholder="Search by Employee ID or Name" class="form-control" style="max-width: 260px;" />
+        <button class="btn btn-primary" onclick="applyAttendanceFilters()">Filter</button>
+        <button class="btn btn-secondary" onclick="resetAttendanceFilters()">Reset</button>
+        <button class="btn btn-secondary" onclick="exportAttendanceToExcel()">Export to Excel</button>
+      </div>
 
-      <div class="card mt-4">
-        <div class="card-header">
-          All Employees Attendance
-        </div>
-        <div class="card-body">
+      <!-- All Employees Table -->
+      <div class="card mt-2">
+        <div class="card-header">Attendance Records</div>
+        <div class="card-body table-responsive">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -155,23 +134,44 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>Status</th>
+                <th>Punctuality</th>
+                <th>Working Hours</th>
               </tr>
             </thead>
-            <tbody id="attendanceTableBody">
-            </tbody>
+            <tbody id="attendanceTableBody"></tbody>
           </table>
         </div>
       </div>
 
-      <footer class="text-center py-3">
-        <small>&copy; 2025 EliteConnect. All rights reserved.</small>
+      <footer class="text-center py-2">
+        <small>&copy; 2025 SmartPresence. All rights reserved.</small>
       </footer>
     </main>
   </div>
-</div>
+  
+  <script>
+    const sidebarToggle = document.getElementById("sidebarToggle");
+    const sidebar = document.querySelector(".sidebar");
 
-<script src="hr_dashboard.js"></script>
+    sidebarToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("show");
+    });
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    // Optional: Hide sidebar when clicking outside
+    document.addEventListener("click", function (e) {
+      if (
+        window.innerWidth <= 768 &&
+        sidebar.classList.contains("show") &&
+        !sidebar.contains(e.target) &&
+        !sidebarToggle.contains(e.target)
+      ) {
+        sidebar.classList.remove("show");
+      }
+    });
+  </script>
+
+  <script src="hr_dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>  
+</html>

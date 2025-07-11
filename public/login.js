@@ -48,11 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
             body: formData,
         })
         .then(response => {
-            console.log('Raw response:', response);  // ✅ Log the raw response
-            return response.json();  // ✅ Parse JSON
+            console.log('Raw response:', response);  // Log the raw response
+            return response.json();  // Parse JSON
         })
         .then(data => {
-            console.log('Parsed response data:', data);  // ✅ Log parsed JSON
+            console.log('Parsed response data:', data);  // Log parsed JSON
     
             if (data.success) {  
                 console.log("Face matched! Marking attendance...");
